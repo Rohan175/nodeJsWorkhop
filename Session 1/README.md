@@ -19,14 +19,14 @@
 
 - Mosh's video of basic JavaScript - [youtube.com/watch?v=W6NZfCO5SIk](https://www.youtube.com/watch?v=W6NZfCO5SIk) 
 
-    ![TOC](images/TOC_classicJs.png)
+    ![TOC](Images/TOC_classicJs.png)
 
 
 ### Modern JavaScript
 
 - [youtube.com/watch?v=NCwa_xi0Uuc](https://www.youtube.com/watch?v=NCwa_xi0Uuc)
 
-    ![TOC](images/TOC_modernJS.png)
+    ![TOC](Images/TOC_modernJS.png)
 
 ## Node
 
@@ -66,7 +66,7 @@ console.log(twoSum([2,7,11,15], 9))  //Output : [0,1]
 - You need to separate assignments folder wise
     - For example, "Your Repository/Assignment-1"
 
-    ![Folder Structure](images/FolderStructure_SS.png)
+    ![Folder Structure](Images/FolderStructure_SS.png)
 
 
 ### Question 2

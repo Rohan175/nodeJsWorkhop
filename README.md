@@ -1,3 +1,3 @@
-# nodeJsWorkhopVGEC
+# NodeJS Workshop
 
-Changed from github -> Hello Github 
+## [Session 1](Session%201/README.md)
