@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Movies</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+
+    <meta name="theme-color" content="#7952b3" />
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <a href="/index.html" class="navbar-brand d-flex align-items-center">
+            <strong>Movies</strong>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Movies Library Example</h1>
+            <p class="lead text-muted">
+              Something short and leading about the collection below—its
+              contents, the creator, etc. Make it short and sweet, but not too
+              short so folks don’t simply skip over it entirely.
+            </p>
+            <p>
+              <a href="./add-movie.html" class="btn btn-primary my-2"
+                >Add a movie</a
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+          <div
+            id="movies-list-container"
+            class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+          ></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="text-muted py-5">
+      <div class="container">
+        <p class="float-end mb-1">
+          <a href="#">Back to top</a>
+        </p>
+        <p class="mb-1">Movies Library</p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="module">
+      import moviesService from "./movies-service.js";
+
+      window.deleteMovie = (id) => {
+        moviesService.deleteMovie(id, (data) => {
+          renderMovies(data);
+        });
+      };
+
+      window.incrementLike = (id) => {
+        const countDOM = document.getElementById(`like-count-${id}`);
+        const count = parseInt(countDOM.innerHTML);
+        countDOM.innerHTML = count + 1;
+
+        moviesService.incrementLike(id);
+      };
+
+      const loadMovies = () => {
+        moviesService.getAllMovies((moviesData) => {
+          renderMovies(moviesData);
+        });
+      };
+
+      const renderMovies = (moviesData) => {
+        const container = document.getElementById("movies-list-container");
+        container.innerHTML = moviesData
+          .map(
+            (movie) => `
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div style="background-image: url('${movie.imageURL}'); background-size: cover; background-repeat: no-repeat; background-position: center; width: 100%; height: 280px"></div>
+                        <div class="card-body">
+                            <p class="card-text">${movie.title}</p>
+                            <p class="card-text" style="min-height: 250px">${movie.description}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                  <a href="./view-movie.html?id=${movie.id}" class="btn btn-sm btn-outline-secondary">👀</a>
+                                    <a href="./edit-movie.html?id=${movie.id}" class="btn btn-sm btn-outline-secondary">✏</a>
+                                    <button onclick="incrementLike('${movie.id}')" class="btn btn-sm btn-outline-secondary"><span id="like-count-${movie.id}">${movie.likes}</span> ❤</button>
+                                    <button onclick="deleteMovie('${movie.id}')" class="btn btn-sm btn-outline-secondary">💩</button>
+                                </div>
+                                <small class="text-muted">${movie.duration} mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+          )
+          .join(" ");
+      };
+      window.addEventListener("load", () => loadMovies());
+    </script>
+  </body>
+</html>

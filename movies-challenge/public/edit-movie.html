@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Edit Movie</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+
+    <meta name="theme-color" content="#7952b3" />
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <a href="./index.html" class="navbar-brand d-flex align-items-center">
+            <strong>Movies</strong>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="container mt-5">
+        <form autocomplete="off" id="add-movies-form" name="add-movies-form">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              name="title"
+              id="title"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              type="text"
+              class="form-control"
+              name="description"
+              id="description"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="imageURL" class="form-label">Image URL</label>
+            <input
+              type="text"
+              class="form-control"
+              name="imageURL"
+              id="imageURL"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="duration" class="form-label">Duration</label>
+            <input
+              type="text"
+              class="form-control"
+              name="duration"
+              id="duration"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </main>
+
+    <footer class="text-muted py-5">
+      <div class="container">
+        <p class="float-end mb-1">
+          <a href="./index.html">Back to home</a>
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="module">
+      import moviesService from "./movies-service.js";
+
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
+
+      const loadMovie = () => {
+        moviesService.getMovie(id, (data) => {
+          document.getElementById("title").value = data.title;
+          document.getElementById("description").value = data.description;
+          document.getElementById("imageURL").value = data.imageURL;
+          document.getElementById("duration").value = data.duration;
+        });
+      };
+
+      window.addEventListener("load", () => loadMovie());
+
+      document.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const { title, imageURL, description, duration } = Object.fromEntries(
+          new FormData(event.target)
+        );
+
+        const err = undefined; // TODO: Add Basic Javascript Validation and generate error object if form is not valid
+
+        if (err) {
+          alert(err.message);
+          return;
+        }
+
+        moviesService.updateMovie(
+          id,
+          { title, imageURL, description, duration },
+          () => {
+            // TODO: redirect to home page
+          }
+        );
+      });
+    </script>
+  </body>
+</html>

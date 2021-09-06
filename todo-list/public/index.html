@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">TODO List</span>
+        </div>
+    </nav>
+    <div class="container">
+        <form name="todo-form" id="todo-form" class="mt-5" onsubmit="event.preventDefault(); createTodoItem();"
+            autocomplete="off">
+            <div class="mb-3">
+                <input type="text" class="form-control" id="title" placeholder="Add Todo Item" />
+            </div>
+        </form>
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 300px;">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col" style="width: 220px;">Updated At</th>
+                    <th scope="col" style="width: 220px;">Created At</th>
+                    <th scope="col" style="width: 200px;">Action</th>
+                </tr>
+            </thead>
+            <tbody id="todo-list-table-body"></tbody>
+        </table>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+        const getTodoItems = () => {
+            return fetch("/todos")
+                .then(x => x.json())
+                .then(data => {
+                    const list = document.getElementById('todo-list-table-body');
+                    list.innerHTML = data.map(x => `
+                    <tr>
+                        <th scope="row" style="${x.isCompleted ? "text-decoration: Line-Through" : ""}">${x.id}</th>
+                        <td style="${x.isCompleted ? "text-decoration: Line-Through" : ""}">${x.title}</td>
+                        <td style="${x.isCompleted ? "text-decoration: Line-Through" : ""}">${x.updatedAt}</td>
+                        <td style="${x.isCompleted ? "text-decoration: Line-Through" : ""}">${x.createdAt}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary ml-3" onclick="toggleTodoItemCompleted('${x.id}')">${x.isCompleted ? "Incomplete" : "&nbsp;Complete&nbsp;"}</button>
+                            <button class="btn btn-sm btn-danger ml-3" onclick="deleteTodoItem('${x.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `).join("");
+                });
+        }
+
+        const createTodoItem = () => {
+            const title = document.getElementById('title').value;
+            if (title) {
+                fetch("/todos", {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title })
+                })
+                    .then(x => x.json())
+                    .then(() => getTodoItems())
+                    .then(() => document.getElementById('title').value = "")
+            }
+        }
+
+        const toggleTodoItemCompleted = (id) => {
+            fetch(`/todos/${id}/toggle-complete`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(x => x.json())
+                .then(() => getTodoItems());
+        }
+
+        const deleteTodoItem = (id) => {
+            fetch(`/todos/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(() => getTodoItems());
+        }
+
+        window.addEventListener('load', () => getTodoItems());
+    </script>
+</body>
+
+</html>

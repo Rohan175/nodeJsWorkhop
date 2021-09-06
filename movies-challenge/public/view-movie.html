@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Movie</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+
+    <meta name="theme-color" content="#7952b3" />
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <a href="/index.html" class="navbar-brand d-flex align-items-center">
+          <strong>Movies</strong>
+        </a>
+      </div>
+    </div>
+
+    <main id="main-div" class="container">
+      <div class="row mt-5 p-5">
+        <div class="col-4">
+          <div class="card" id="movie-image"></div>
+        </div>
+        <div class="col-8">
+          <h1 class="fw-light" id="movie-title">Movies Library Example</h1>
+          <p class="lead" id="movie-description">
+            Something short and leading about the collection below—its contents,
+            the creator, etc. Make it short and sweet, but not too short so
+            folks don’t simply skip over it entirely.
+          </p>
+          <p><span id="movie-duration"></span> Minutes</p>
+          <p>
+            <a
+              href="./edit-movie.html"
+              id="movie-edit-button"
+              class="btn btn-primary my-2"
+              >Edit</a
+            >
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="text-muted py-5">
+      <div class="container">
+        <p class="float-end mb-1">
+          <a href="./index.html">Back to home</a>
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="module">
+      import moviesService from "./movies-service.js";
+
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
+
+      const loadMovie = () => {
+        moviesService.getMovie(id, (movie) => {
+          document.getElementById("movie-title").innerHTML = movie.title;
+          document.getElementById("movie-description").innerHTML =
+            movie.description;
+          document.getElementById(
+            "movie-duration"
+          ).innerHTML = `${movie.duration}`;
+          document.getElementById(
+            "movie-image"
+          ).innerHTML = `<img src="${movie.imageURL}" class="card-img-top" alt="${movie.title}">`;
+
+          document
+            .getElementById("movie-edit-button")
+            .setAttribute("href", `./edit-movie.html?id=${id}`);
+        });
+      };
+
+      window.addEventListener("load", () => loadMovie());
+    </script>
+  </body>
+</html>
