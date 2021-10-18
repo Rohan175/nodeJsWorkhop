@@ -1,7 +1,7 @@
 # NodeJS Workshop
 
-## [ToDo List Solution](todo-list/README.md)
+## [ToDo List Solution](todo-list)
 
-## [Movies Challenge](movies-challenge/README.md)
+## [Movies Challenge](movies-challenge)
 
-## [Refrence - Tutorials & Documentation](Refrence/README.md)
+## [Refrence - Tutorials & Documentation](Refrence)
