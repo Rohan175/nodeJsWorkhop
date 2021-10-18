@@ -22,3 +22,5 @@
 ### Integrate APIs in frontend
 
 - movies-services.js & edit-movie.html contains appropirate ToDos 
+
+### Host the solution in [heroku.com](https://www.heroku.com/) (Optional)
