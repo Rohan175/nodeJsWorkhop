@@ -1,11 +1,12 @@
-# Create movies API
+
+# Create movies API as per the Demo
+
+# [Demo](https://movies-challenge-solution.herokuapp.com/index.html)
+
 
 ### Create node project with npm & install express
-  - ref : [ToDo List](../todo-list/index.js)
-  - Documentation
-    - [express](https://expressjs.com/en/api.html)
-    - [express - video](https://www.youtube.com/watch?v=pKd0Rpw7O48)
-    - [npm](https://dev.to/chandelieraxel/the-npm-guide-i-would-have-loved-as-a-beginner-4i07)
+  - ref : [ToDo List Demo](../todo-list/README.md)
+  - ref : [Tutorials & Documentation](../Refrence/README.md)
 
 ### Create following APIs
 
@@ -21,6 +22,3 @@
 ### Integrate APIs in frontend
 
 - movies-services.js & edit-movie.html contains appropirate ToDos 
-
-### Github
- - Push code in your assignment github repository
